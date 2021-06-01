@@ -1,0 +1,39 @@
+GET http://127.0.0.1:3000/anmeldungen
+###
+GET http://127.0.0.1:3000/anmeldungen/All
+###
+GET http://127.0.0.1:3000/interessenten
+###
+GET http://127.0.0.1:3000/images
+###
+GET http://127.0.0.1:3000/interessenten/Mansoir@gmail.com
+###
+GET http://127.0.0.1:3000/anmeldungen/anzahl
+###
+GET http://127.0.0.1:3000/anmeldungen/Informatik
+###
+DELETE http://127.0.0.1:3000/firma/1
+###
+POST http://127.0.0.1:3000/interessenten
+content-type: application/json
+
+
+{
+	
+	
+	"firmen_name": "Gute Sache",
+	"mail":"dsadasds@gmail.com",
+	"telefonnummer": "3721893721983",
+	"vorname": "Der",
+	"nachname": "Mann"
+		
+	
+}
+
+###
+PATCH http://127.0.0.1:3000/interessenten/9
+content-type: application/json
+
+{
+	"bestaetigung": true
+}
