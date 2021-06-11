@@ -22,9 +22,6 @@
           </li>
 
           <li class="nav-item ">
-            <a class="nav-link" href="#anfrage">Anfrage</a>
-          </li>
-          <li class="nav-item ">
             <a class="nav-link" href="#anmeldungen">Anmeldungen</a>
           </li>
           <li class="nav-item ">
@@ -33,8 +30,8 @@
         </ul>
         <ul class=" navbar-nav me-5 mb-2 " id="login">
           <li class="nav-item">
-            <router-link to="/login"
-              ><a class="nav-link" href="#">Login</a></router-link
+            <router-link to="/logout"
+              ><a class="nav-link">Abmelden</a></router-link
             >
           </li>
         </ul>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class=" mt-5">
-      <navbar id="home" />
+      <Navbar id="home" />
       <div class="  mt-5 py-4" id="head">
         <formular id="formular" />
       </div>
@@ -12,7 +12,7 @@
 <script>
 import axios from 'axios';
 import formular from '@/componentsFormular/formular.vue';
-import navbar from '@/componentsLogin/navbar.vue';
+import Navbar from '@/componentsFormular/NavbarFormular.vue';
 
 export default {
   name: 'app',
@@ -38,7 +38,7 @@ export default {
 
   components: {
     formular,
-    navbar,
+    Navbar,
   },
 };
 </script>

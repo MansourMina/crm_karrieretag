@@ -1,129 +1,133 @@
 <template>
   <div class="container-fluid px-3 px-md-5 px-lg-3 px-xl-5 py-5 mx-auto">
     <navbar />
-    <div class="container d-flex flex-column min-vh-100">
+    <div
+      class="col-md-12 "
+      style="text-align: center"
+      v-if="user.name.length != 0"
+    >
+      <h1 class="mt-5">You are already logged in</h1>
+    </div>
+    <div v-else>
       <form @submit.prevent="login">
-        <h1 class="text-center my-3">Login</h1>
-        <div class="row">
-          <div class="col-3 offset-2">
-            <input
-              class="form-control"
-              type="email"
-              v-model="email"
-              placeholder="Email"
-              required
-            />
+        <div class="card card0 mt-5 border-0">
+          <div class="row d-flex">
+            <div class="col-lg-6">
+              <div class=" d-block text-center  border-line">
+                <img
+                  src="@/assets/Anmeldung_Logo.svg"
+                  class="logo"
+                  style="height:60vh; width:60vh; margin:-30px; "
+                />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card2 border-0 px-4 py-5">
+                <div class="row px-3">
+                  {{ message }}
+                </div>
+                <div class="row px-3">
+                  <label class="mb-1">
+                    <h6 class="mb-0 spacing text-sm">User-ID</h6>
+                  </label>
+                  <input
+                    class="mb-4 logininput"
+                    type="text"
+                    name="email"
+                    v-model="userId"
+                    placeholder="Enter a valid email address"
+                  />
+                </div>
+                <div class="row px-3 mb-4">
+                  <label class="mb-1">
+                    <h6 class="spacing mb-0 text-sm">Password</h6>
+                  </label>
+                  <input
+                    class="logininput"
+                    type="password"
+                    name="password"
+                    v-model="password"
+                    placeholder="Enter password"
+                  />
+                </div>
+                <!-- <div class="row px-3 mb-4">
+              <a href="#" class="ml-auto mb-0 text-sm">Forgot Password?</a>
+            </div> -->
+                <div class="row mb-3 px-3">
+                  <button
+                    type="submit"
+                    style="background-color: #B61212;"
+                    class="btn btn-blue text-center"
+                    @click="login()"
+                  >
+                    Login
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-3">
-            <input
-              class="form-control"
-              type="password"
-              v-model="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <div class="col-2">
-            <button class="btn btn-primary" @click="login()">Login</button>
+          <div class=" py-4" style="background-color: #B61212;">
+            <div class="row text-white px-3">
+              <small class="ml-4 ml-sm-5  mb-2"
+                >Copyright &copy; 2019. All rights reserved.</small
+              >
+              <div class="social-contact ml-4 ml-sm-auto">
+                HTL Wien West
+              </div>
+            </div>
           </div>
         </div>
       </form>
-      <p class="mt-4 text-center">
-        No account? <a href="/register">Register</a> first!
-      </p>
-      <p class="mt-auto text-center">&copy; 2021 Robert Baumgartner</p>
-    </div>
-    <div class="card card0 mt-5 border-0">
-      <div class="row d-flex">
-        <div class="col-lg-6">
-          <div class=" d-block text-center  border-line">
-            <img
-              src="@/assets/Anmeldung_Logo.svg"
-              class="logo"
-              style="height:60vh; width:60vh; margin:-30px; "
-            />
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="card2 border-0 px-4 py-5">
-            <div class="row px-3">
-              <label class="mb-1">
-                <h6 class="mb-0 spacing text-sm">Email Address</h6>
-              </label>
-              <input
-                class="mb-4 logininput"
-                type="text"
-                name="email"
-                placeholder="Enter a valid email address"
-              />
-            </div>
-            <div class="row px-3 mb-4">
-              <label class="mb-1">
-                <h6 class="spacing mb-0 text-sm">Password</h6>
-              </label>
-              <input
-                class="logininput"
-                type="password"
-                name="password"
-                placeholder="Enter password"
-              />
-            </div>
-            <!-- <div class="row px-3 mb-4">
-              <a href="#" class="ml-auto mb-0 text-sm">Forgot Password?</a>
-            </div> -->
-            <div class="row mb-3 px-3">
-              <button
-                type="submit"
-                style="background-color: #B61212;"
-                class="btn btn-blue text-center"
-                @click="$router.push('/formular')"
-              >
-                Login
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class=" py-4" style="background-color: #B61212;">
-        <div class="row text-white px-3">
-          <small class="ml-4 ml-sm-5  mb-2"
-            >Copyright &copy; 2019. All rights reserved.</small
-          >
-          <div class="social-contact ml-4 ml-sm-auto">
-            HTL Wien West
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 <script>
 import axios from 'axios';
-import navbar from '@/componentsLogin/navbar.vue';
+import navbar from '@/componentsLogin/NavbarLogin.vue';
 export default {
   name: 'app',
   data() {
     return {
-      email: 'john@gmail.com',
-      password: '1234',
+      userId: '3a9997ccb8',
+      password: 'a04b14a17e',
+      user: {
+        id: '',
+        name: '',
+      },
+      message: '',
     };
   },
   components: {
     navbar,
   },
+  created() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (user != null) {
+      this.user.id = user.id;
+      this.user.name = user.name;
+    }
+  },
   methods: {
     async login() {
-      let { data } = await axios({
-        url: '/login',
-        method: 'POST',
-        contentType: 'application/json',
-        data: {
-          email: this.email,
-          password: this.password,
-        },
-      });
-      localStorage.setItem('user', JSON.stringify(data));
-      this.$router.push('/');
+      try {
+        let { data } = await axios({
+          url: '/login',
+          method: 'POST',
+          contentType: 'application/json',
+          data: {
+            userId: this.userId,
+            password: this.password,
+          },
+        });
+        if (data.erfolgreich) {
+          localStorage.setItem('user', JSON.stringify(data));
+          this.$router.push('/');
+        } else {
+          this.message = 'Wrong User ID or password';
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };
@@ -152,39 +156,6 @@ export default {
 
 .border-line {
   border-right: 1px solid #eeeeee;
-}
-
-.facebook {
-  background-color: #3b5998;
-  color: #fff;
-  font-size: 18px;
-  padding-top: 5px;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
-.twitter {
-  background-color: #1da1f2;
-  color: #fff;
-  font-size: 18px;
-  padding-top: 5px;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
-.linkedin {
-  background-color: #2867b2;
-  color: #fff;
-  font-size: 18px;
-  padding-top: 5px;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
 }
 
 .line {

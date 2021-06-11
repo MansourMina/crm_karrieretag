@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button @click="test">KLick</button>
     <form
       v-on:submit.prevent="onSubmit()"
       class="mt-2 py-5 bg-dark text-white"
@@ -28,17 +27,28 @@
       </header>
 
       <div v-if="sended == false" class="space">
-        <div class="d-flex mb-3 mt-3  justify-content-center ">
-          <div class="form-group  form-floating mb-3 col-md-6 col-10 ">
-            <input
-              type="text"
-              class="form-control"
-              id="floatingFirma"
-              v-model="firma"
-              placeholder="Firma"
-              required="required"
-            />
-            <label for="floatingFirma" style="color:black">Company-name</label>
+        <div class="mb-4">
+          <div class="d-flex  justify-content-center ">
+            <div class="form-group  form-floating col-md-6 col-10">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingFirma"
+                v-model="firma"
+                placeholder="Firma"
+                required="required"
+              />
+              <label for="floatingFirma" style="color:black"
+                >Company-name</label
+              >
+            </div>
+          </div>
+          <div class="d-flex justify-content-center   " v-if="firmaVorhanden()">
+            <div class="form-group form-floating  col-md-6 col-10">
+              <p style="color:red" class="mb-0">
+                <i> Mit diesem Firmen Namen ist schon ein Antrag ausgestellt</i>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -56,6 +66,7 @@
               <label for="floatingVorname" style="color:black">Firstname</label>
             </div>
           </div>
+
           <div class="form-group col-md-3 col-5 ">
             <div class="form-floating space2 mb-3">
               <input
@@ -94,17 +105,28 @@
           </div>
         </div>
 
-        <div class="d-flex mb-3  justify-content-center ">
-          <div class="form-group form-floating mt-3 mb-3 col-md-6 col-10">
-            <input
-              type="number"
-              placeholder="Telefonnummer"
-              class="form-control"
-              id="floatingTel"
-              v-model="tel"
-              required="required"
-            />
-            <label for="floatingTel" style="color:black">Telefonnummer</label>
+        <div class="mb-3">
+          <div class="d-flex  justify-content-center ">
+            <div class="form-group  form-floating col-md-6 col-10">
+              <input
+                type="number"
+                placeholder="Telefonnummer"
+                class="form-control"
+                id="floatingTel"
+                v-model="tel"
+                required="required"
+              />
+              <label for="floatingTel" style="color:black">Telefonnummer</label>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center" v-if="telVorhanden()">
+            <div class="form-group form-floating  col-md-6 col-10">
+              <p style="color:red" class="mb-0">
+                <i>
+                  Mit dieser Telefonnummer ist schon ein Antrag ausgestellt</i
+                >
+              </p>
+            </div>
           </div>
         </div>
 
@@ -225,6 +247,7 @@ export default {
       sitekey: '6LcUcWQaAAAAAIJ9a0k79YiVYlHjCyh6E319VjeO',
       captcha: true,
       clicked: false,
+      myModal: null,
     };
   },
   props: {
@@ -239,15 +262,26 @@ export default {
     VueRecaptcha,
     // PopUp,
   },
+  mounted() {
+    // this.myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+    //   keyboard: false,
+    // });
+  },
 
   methods: {
     test() {
-       console.log(this.$refs)
-       this.$refs['exModal'].show();
+      console.log(this.$refs);
+      this.$refs['exModal'].show();
     },
+
     onSubmit() {
       this.clicked = true;
-      if (this.captcha == false && !this.emailVorhanden()) {
+      if (
+        this.captcha == false &&
+        !this.emailVorhanden() &&
+        !this.firmaVorhanden() &&
+        !this.telVorhanden()
+      ) {
         this.$emit(
           'onSubmit',
           this.firma,
@@ -257,8 +291,9 @@ export default {
           this.mail,
         );
         this.sended = true;
-        console.log("sdfsdfsfdsfsfsdf");
-        this.$refs['exampleModal'].show();
+        // this.$refs['exampleModal'].show();
+
+        this.myModal.show();
         this.addon = true;
       }
     },
@@ -279,6 +314,14 @@ export default {
 
     emailVorhanden() {
       if (this.alleanm.find((el) => el.firmen_mail == this.mail)) return true;
+      return false;
+    },
+    firmaVorhanden() {
+      if (this.alleanm.find((el) => el.firmen_name == this.firma)) return true;
+      return false;
+    },
+    telVorhanden() {
+      if (this.alleanm.find((el) => el.telefonnummer == this.tel)) return true;
       return false;
     },
   },

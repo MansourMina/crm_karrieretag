@@ -28,7 +28,7 @@
           aria-selected="false"
           @click="setCategory('Elektronik-Elektrotechnik')"
         >
-          E
+          Elektronik
         </a>
       </li>
       <li class="nav-item" role="presentation">
@@ -41,7 +41,7 @@
           role="tab"
           aria-controls="pills-Informatik"
           aria-selected="false"
-          @click="setCategory('Informatik')"
+          @click="setCategory('Informationstechnologie')"
         >
           IT
         </a>

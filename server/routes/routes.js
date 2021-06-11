@@ -2,7 +2,6 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 
 const router = express.Router();
-const users = require('../model/users');
 const {
   getAnmeldungen,
   getAnzahLFreiePlätze,
@@ -15,33 +14,82 @@ const { getImages } = require('../model/images');
 const {
   addInteressent,
   getInteressenten,
+  getInteressent,
   checkInteressent,
   updateInteressent,
 } = require('../model/interessenten');
+
+const {
+  getAnmeldedaten,
+  addAnmeldedaten,
+  getAdmindaten,
+} = require('../model/anmeldedaten');
 
 const redirectLogin = (req, res, next) => {
   if (!req.session.userId) res.status(400).send('You are not logged in!');
   else next();
 };
 
-router.post('/login', (req, res) => {
-  let email = req.body.email;
-  let password = req.body.password;
-  if (email && password) {
-    const user = users.find(
-      (el) => el.email === email && el.password === password
-    );
-    if (user) {
-      req.session.userId = user.id;
-      res.status(200).json({ id: user.id, name: user.name });
-    } else res.status(401).send('Wrong email or password');
-  } else res.status(400).send('Login failed');
-});
+router.post(
+  '/login',
+  asyncHandler(async (req, res) => {
+    let userId = req.body.userId;
+    let password = req.body.password;
+    if (userId && password) {
+      const { data } = await getAnmeldedaten();
+      const admin = await getAdmindaten();
 
+      const admindaten = admin.data.find(
+        (el) => el.user_id === userId && el.password === password,
+      );
+      const user = data.find(
+        (el) => el.user_id === userId && el.passwort === password,
+      );
+      if (admindaten) {
+        req.session.userId = admindaten.user_id;
+        res.status(200).json({
+          id: admindaten.user_id,
+          name: admindaten.admin_name,
+          admin: true,
+          erfolgreich: true,
+        });
+      } else if (user) {
+        const interessent = await getInteressent(user.firmen_id);
+
+        req.session.userId = user.user_id;
+        res.status(200).json({
+          id: user.user_id,
+          name: user.firmen_name,
+          formular: interessent.data.formular,
+          firmen_id: interessent.data.firmen_id,
+          admin: false,
+          erfolgreich: true,
+        });
+      } else res.status(200).json({ erfolgreich: false });
+    } else res.status(400).send('Login failed');
+  }),
+);
+
+router.get(
+  '/checkadmin',
+  asyncHandler(async (req, res) => {
+    const { data } = await getAdmindaten();
+    console.log(req.session.userId);
+    const checkadmin = data.find((el) => el.user_id == req.session.userId);
+
+    if (checkadmin && checkadmin.user_id == req.session.userId) {
+      res.status(200).json({ status: true });
+      console.log('admin');
+    } else {
+      res.status(200).json({ status: false });
+    }
+  }),
+);
 router.get('/logout', redirectLogin, (req, res) => {
   req.session.destroy();
   res.clearCookie(process.env.SESSION_NAME);
   res.status(200).send('erfolgreich ausgeloggt');
+  // res.end();
 });
 
 router.get(
@@ -87,6 +135,22 @@ router.get(
 );
 
 router.get(
+  '/interessent/:name',
+  asyncHandler(async (req, res) => {
+    const { data, code } = await getInteressent(req.params.name);
+    res.status(code).json(data);
+  }),
+);
+
+router.get(
+  '/anmeldedaten',
+  asyncHandler(async (req, res) => {
+    const { data, code } = await getAnmeldedaten();
+    res.status(code).json(data);
+  }),
+);
+
+router.get(
   '/interessenten/:firma',
   asyncHandler(async (req, res) => {
     const result = await checkInteressent(req.params.firma);
@@ -121,6 +185,14 @@ router.patch(
   '/interessenten/:id',
   asyncHandler(async (req, res) => {
     const result = await updateInteressent(req.params.id, req.body);
+    res.status(result.code).json(result);
+  }),
+);
+
+router.post(
+  '/anmeldedaten',
+  asyncHandler(async (req, res) => {
+    const result = await addAnmeldedaten(req.body);
     res.status(result.code).json(result);
   }),
 );

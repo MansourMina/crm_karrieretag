@@ -21,9 +21,16 @@
     <div class="py-3 ">
       <div class="row justify-content-center">
         <div class="col-md-4 py-3" v-for="i of images" :key="i.id">
-          <div class="content">
+          <div
+            class="content"
+            @click="popUpImage(i)"
+            data-bs-toggle="modal"
+            data-bs-target="#imageModal"
+          >
             <div class="content-overlay"></div>
-            <img class="content-image imageK" :src="i.url" />
+            <div>
+              <img class="content-image imageK" :src="i.url" />
+            </div>
             <div class="content-details fadeIn-bottom">
               <h3 class="content-title">{{ i.title }}</h3>
             </div>
@@ -31,16 +38,25 @@
         </div>
       </div>
     </div>
-    <Demo/>
-
-    <!-- DEMO 2-->
+    <Modal
+      v-if="isImageVisible"
+      class="modal fade"
+      id="imageModal"
+      tabindex="-1"
+      :i="objectOfImage"
+    />
   </div>
 </template>
 
 <script>
-import Demo from '@/components/Demo.vue';
-// import PopUpImage from '@/components/PopUpImage.vue';
+import Modal from '@/components/Modal.vue';
 export default {
+  data() {
+    return {
+      isImageVisible: false,
+      objectOfImage: null,
+    };
+  },
   props: {
     images: {
       type: Array,
@@ -48,7 +64,13 @@ export default {
   },
   components: {
     // PopUpImage,
-    Demo
+    Modal,
+  },
+  methods: {
+    popUpImage(obj) {
+      this.objectOfImage = obj;
+      this.isImageVisible = !this.isImageVisible;
+    },
   },
 };
 </script>

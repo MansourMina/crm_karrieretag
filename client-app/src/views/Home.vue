@@ -1,63 +1,34 @@
 <template>
   <div id="app">
-    <navbar id="home" />
-    <div class="container d-flex flex-column min-vh-100">
-      <h1 class="text-center mt-3">Welcome {{ user.name }}</h1>
-      <div v-if="user.name.length == 0" class="d-flex flex-column">
-        <div class="mx-auto">
-          <router-link to="/login">Login</router-link> |
-          <router-link to="/register">Register</router-link>
-        </div>
-        <p class="my-5 text-center">Please login to use our services!</p>
+    <div v-if="user.name.length == 0">
+      <navbar id="home" />
+    </div>
+    <div v-if="user.name.length != 0 && user.admin">
+      <navbarAdmin id="home" />
+    </div>
+    <div v-if="user.name.length != 0 && !user.admin">
+      <navbarafterlogin id="home" />
+    </div>
+    <div class="py-5" v-if="user.name.length != 0">
+      <div class="container d-flex flex-column mt-5 ">
+        <h1 class="text-center mt-3">Willkommen {{ user.name }}</h1>
 
-        <div class="row">
-          <div class="col-4">
-            <img class="img-fluid" src="/images/ceo.jpg" />
-          </div>
-          <div class="col-8 d-flex flex-column justify-content-center">
-            <h3>A word from our CEO</h3>
-            <h4>Dear Customer</h4>
-            <p class="text-justify">
-              PlanationX is an innovative International Seed Company, active in
-              Plant Breeding, in Seed Production, in Seed Processing; and in
-              Marketing and Sales of hybrid vegetable varieties for the
-              professional sectors. PlanationX is an industry leader in Research
-              and Development of new, improved vegetable varieties. The
-              Company’s strategic focus is to develop hybrids with novel traits
-              that have a high added- value and that meet the present and future
-              demands of our customers. Over the last fifteen years, we have
-              marketed the seeds of our Cucurbit varieties worldwide and we
-              maintain the highest standards of genetic quality, integrity and
-              professionalism. Research is the heart of PlanationX and its
-              future.
-            </p>
-          </div>
+        <div class="d-flex flex-column justify-content-center">
+          <h5 class="text-center mb-1">You are logged in!</h5>
         </div>
       </div>
-
-      <div v-else class="d-flex flex-column justify-content-center">
-        <h5 class="text-center mb-4">You are logged in!</h5>
-        <div class="mx-auto">
-          <router-link to="/account">Account</router-link> |
-          <router-link to="/logout">Logout</router-link>
-        </div>
-        <h5 class="text-center mt-5 text-danger">
-          Your account is about to expire. Update your credit card information!
-        </h5>
-        <p class="text-center mt-3">Please act immediatley!</p>
-      </div>
-
-      <p class="mt-auto text-center">&copy; 2021 Robert Baumgartner</p>
     </div>
     <Intro />
 
     <div id="informationen">
       <Information :images="images" />
     </div>
-    <div id="anfrage">
+
+    <div id="anfrage" v-if="!user.name.length != 0">
       <formular @onSubmit="addInteressent" :alleanm="alleanmeldungen">
       </formular>
     </div>
+    <hr />
 
     <div id="anmeldungen">
       <Anmeldungen
@@ -80,6 +51,8 @@ import Information from '@/components/Information.vue';
 import Intro from '@/components/Intro.vue';
 import Anmeldungen from '@/components/Anmeldungen.vue';
 import navbar from '@/components/navbar.vue';
+import navbarafterlogin from '@/components/navbarAfterLogin.vue';
+import navbarAdmin from '@/componentsLogin/NavbarLoginAdmin.vue';
 import WhereToFind from '@/components/WhereToFind.vue';
 
 import axios from 'axios';
@@ -96,6 +69,7 @@ export default {
       user: {
         id: '',
         name: '',
+        admin: null,
       },
     };
   },
@@ -107,6 +81,8 @@ export default {
     Intro,
     Anmeldungen,
     WhereToFind,
+    navbarafterlogin,
+    navbarAdmin,
   },
   created() {
     this.getAnzahlFreiPlätze();
@@ -116,6 +92,7 @@ export default {
     if (user != null) {
       this.user.id = user.id;
       this.user.name = user.name;
+      this.user.admin = user.admin;
       console.log(this.user);
     }
   },

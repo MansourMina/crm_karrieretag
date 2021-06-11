@@ -1,8 +1,12 @@
 GET http://127.0.0.1:3000/anmeldungen
 ###
-GET http://127.0.0.1:3000/anmeldungen/All
+GET http://127.0.0.1:3000/anmeldedaten
+###
+GET http://127.0.0.1:3000/anmeldungen/M
 ###
 GET http://127.0.0.1:3000/interessenten
+###
+GET http://127.0.0.1:3000/interessent/Kiki
 ###
 GET http://127.0.0.1:3000/images
 ###

@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <div class="row">
       <div class="col-lg-12 card-margin">
@@ -80,7 +79,7 @@
                             </td>
                             <td>
                               <div class="widget-26-job-info mt-3">
-                                <p class="type m-0">{{ i.firmen_mail }}</p>
+                                <p @click="copyMail(i.firmen_mail)" class="type m-0">{{ i.firmen_mail }}</p>
                               </div>
                             </td>
                             <td v-if="i.status == 'Interessent'">
@@ -111,15 +110,28 @@
                               </div>
                             </td>
                             <td v-if="i.status == 'Interessent'">
-                              <div class="widget-26-job-category">
-                                <a @click="setTeilnahmeTrue(i)">
-                                  <i class="bi bi-bookmark-check"></i>
+                              <div class="widget-26-job-category mt-1">
+                                <a
+                                  @click="setDatenerhaltenTrue(i), setDaten(i)"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    fill="currentColor"
+                                    class="bi bi-envelope"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path
+                                      d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"
+                                    />
+                                  </svg>
                                 </a>
                               </div>
                             </td>
                             <td>
                               <div
-                                class="widget-26-job-category "
+                                class="widget-26-job-category mt-1 "
                                 v-if="i.status == 'Interessent'"
                               >
                                 <a @click="deleteFirma(i)">
@@ -192,7 +204,14 @@ export default {
       });
       this.anmeldungen = data;
     },
-    async setTeilnahmeTrue(i) {
+    generateDidgetsAndLetters() {
+      return 'xxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (Math.random() * 16) | 0,
+          v = c == 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      });
+    },
+    async setDatenerhaltenTrue(i) {
       await axios({
         url: `http://127.0.0.1:3000/interessenten/${i.firmen_id}`,
         method: 'PATCH',
@@ -203,12 +222,30 @@ export default {
       });
       this.getAnmeldungen();
     },
+    async setDaten(i) {
+      await axios({
+        url: `http://127.0.0.1:3000/anmeldedaten`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: {
+          firmen_name: i.firmen_name,
+          firmen_id: i.firmen_id,
+          passwort: this.generateDidgetsAndLetters(),
+          user_id: this.generateDidgetsAndLetters(),
+        },
+      });
+      this.getAnmeldungen();
+    },
     async deleteFirma(i) {
       await axios({
         url: `http://127.0.0.1:3000/firma/${i.firmen_id}`,
         method: 'DELETE',
       });
       this.getAnmeldungen();
+    },
+    copyMail(mail) {
+      mail.select();
+      document.execCommand('copy');
     },
   },
 };

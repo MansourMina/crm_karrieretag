@@ -32,10 +32,9 @@ async function getAnmeldungen() {
 async function getAllAnmeldungen() {
   try {
     const { rows } = await db.query(
-      'SELECT * from firma ORDER BY anfrage_zeitpunkt',
+      'SELECT * from firma JOIN ansprechperson a on firma.firmen_id = a.firmen_id  ORDER BY anfrage_zeitpunkt',
     );
 
-    console.log(rows);
     return { code: 200, data: rows };
   } catch (err) {
     console.error(err);
@@ -55,7 +54,6 @@ async function getCategory(c) {
     const { rows } = await db.query(
       `SELECT fachrichtung,firmen_name,firmen_id from firma where status = 'Teilnehmer'`,
     );
-    console.log(rows);
 
     if (c == 'alle') {
       return { code: 200, data: rows };

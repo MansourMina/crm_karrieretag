@@ -23,7 +23,7 @@ async function getInteressenten() {
 async function getInteressent(id) {
   try {
     const { rows } = await db.query(
-      'SELECT * from firma WHERE firmen_id = $1',
+      'SELECT * from firma JOIN ansprechperson a on firma.firmen_id = a.firmen_id where firma.firmen_id= $1',
       [id],
     );
     if (rows.length > 0)
@@ -48,7 +48,7 @@ async function addInteressent(a) {
 
     let interessenten_id = rows[0].max + 1;
     await db.query(
-      'INSERT INTO firma (status, firmen_name, firmen_mail, firmen_id, uhrzeit, fachrichtung, anzahl_praesentatoren, platz, aufbauhilfe, rechnungsadresse,anfrage_zeitpunkt) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)',
+      'INSERT INTO firma (status, firmen_name, firmen_mail, firmen_id, uhrzeit, fachrichtung, platz, aufbauhilfe, rechnungsadresse,anfrage_zeitpunkt,url, ansprechpartner_ausstellung_name, ansprechpartner_ausstellung_mail, vortrag_auswahl, ferialpraktikum_auswahl, sponsoring_interessiert, firmen_kommentar) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)',
       [
         'Interessent',
         a.firmen_name,
@@ -59,8 +59,14 @@ async function addInteressent(a) {
         null,
         null,
         null,
-        null,
         a.anfrage_zeitpunkt,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
       ],
     );
     await db.query(
@@ -119,10 +125,13 @@ async function updateInteressent(id, p) {
       for (const key in p) {
         newProduktProps.push(`${key}= '${p[key]}'`);
       }
-      let cmd = `UPDATE firma Set ${newProduktProps.join(
+      await db.query(`UPDATE firma Set ${newProduktProps.join(
         ',',
-      )} where firmen_id = $1`;
-      await db.query(cmd, [id]);
+      )} where firmen_id = $1`, [id]);
+      // await db.query(
+      //   `UPDATE ansprechperson Set mail= $1 where firmen_id = $2`,
+      //   [p.mailteilnehmer,id],
+      // );
       return {
         code: 200,
         data: 'updated ' + id,
@@ -130,7 +139,7 @@ async function updateInteressent(id, p) {
     } else {
       return {
         code: 404,
-        data: `The produkt with the id ${id} was not found`,
+        data: `The company with the id ${id} was not found`,
       };
     }
   } catch (err) {
@@ -144,4 +153,5 @@ module.exports = {
   getInteressenten,
   checkInteressent,
   updateInteressent,
+  getInteressent,
 };

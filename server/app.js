@@ -25,13 +25,8 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '/public')));
 let { PORT, NODE_ENV, SESSION_LIFETIME, SESSION_NAME, SESSION_SECRET } =
   process.env;
-  
+
 app.use(helmet());
-
-app.use('/', routes);
-app.use(notfoundHandler);
-
-app.use(errorHandler);
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(history());
@@ -51,6 +46,14 @@ app.use(
     },
   }),
 );
+
+app.use('/', routes);
+
+
+app.use(notfoundHandler);
+
+app.use(errorHandler);
+
 app.listen(PORT ?? 5000);
 // app.listen(PORT, () => console.log(`listening on port ${PORT}`));
 console.log('finished with setup');
