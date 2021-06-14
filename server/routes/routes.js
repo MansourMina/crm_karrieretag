@@ -85,12 +85,12 @@ router.get(
     }
   }),
 );
-router.get('/logout', redirectLogin, (req, res) => {
+router.get('/logout', redirectLogin, asyncHandler((req, res) => {
   req.session.destroy();
   res.clearCookie(process.env.SESSION_NAME);
   res.status(200).send('erfolgreich ausgeloggt');
-  // res.end();
-});
+  // res.end();)
+}));
 
 router.get(
   '/anmeldungen',

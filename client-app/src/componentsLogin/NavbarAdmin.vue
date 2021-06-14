@@ -1,9 +1,15 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="@/assets/CRM_logo.svg" width="110" height="60" alt="Logo" />
-      </a>
+      <router-link to="/"
+        ><a class="navbar-brand">
+          <img
+            src="@/assets/CRM_logo.svg"
+            width="110"
+            height="60"
+            alt="Logo"
+          /> </a
+      ></router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -18,25 +24,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item  ">
-            <a class="nav-link " href="#informationen">Infos</a>
-          </li>
-
-          <li class="nav-item ">
-            <a class="nav-link" href="#anmeldungen">Anmeldungen</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="#map">Location</a>
+            <router-link to="/"><a class="nav-link ">Home</a></router-link>
           </li>
         </ul>
         <ul class=" navbar-nav me-5 mb-2 " id="login">
           <li class="nav-item">
-            <router-link to="/formular"
-              ><a class="nav-link">Formular</a></router-link
-            >
-          </li>
-          <li class="nav-item">
             <router-link to="/logout"
-              ><a class="nav-link">Abmelden</a></router-link
+              ><a class="nav-link" href="#">Abmelden</a></router-link
             >
           </li>
         </ul>

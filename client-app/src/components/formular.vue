@@ -15,6 +15,14 @@
             Sie gerne, um weitere Details zu klären
           </h5>
         </div>
+        <div v-else>
+          <h1 class="display-4 ">
+            DANKE FÜR IHREN ANTRAG
+          </h1>
+          <h5 id="antrag-info" class="text-center text-secondary ">
+            Sie werden in Kürze über Ihre Teilnahme benachrichtigt!
+          </h5>
+        </div>
 
         <!-- <div v-else>
           <h1 class="display-4 py-4 font-weight-bold">
@@ -193,45 +201,12 @@
       aria-labelledby="staticBackdropLabel"
       aria-hidden="true"
     /> -->
-    <div
-      class="modal fade"
-      ref="exModal"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import emailjs from 'emailjs-com';
+
 import VueRecaptcha from 'vue-recaptcha';
 // import PopUp from '@/components/PopUp.vue';+p
 export default {
@@ -291,7 +266,26 @@ export default {
           this.mail,
         );
         this.sended = true;
-        // this.$refs['exampleModal'].show();
+        const templateParams = {
+          to_name: this.firma,
+          to_mail: this.mail,
+        };
+
+        emailjs
+          .send(
+            'service_6zmw3po',
+            'template_qacoaob',
+            templateParams,
+            'user_gAbx3AR9ArUExRlnHVA3H',
+          )
+          .then(
+            (response) => {
+              console.log('SUCCESS!', response.status, response.text);
+            },
+            (err) => {
+              console.log('FAILED...', err);
+            },
+          );
 
         this.myModal.show();
         this.addon = true;

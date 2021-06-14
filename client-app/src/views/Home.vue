@@ -15,6 +15,9 @@
 
         <div class="d-flex flex-column justify-content-center">
           <h5 class="text-center mb-1">You are logged in!</h5>
+          <router-link to="/formular" class="text-center" v-if="!user.admin"
+            ><a class=""><u>FORMULAR</u></a></router-link
+          >
         </div>
       </div>
     </div>
@@ -24,11 +27,13 @@
       <Information :images="images" />
     </div>
 
-    <div id="anfrage" v-if="!user.name.length != 0">
-      <formular @onSubmit="addInteressent" :alleanm="alleanmeldungen">
-      </formular>
+    <div v-if="user.name.length != 0">
+      <hr />
     </div>
-    <hr />
+
+    <div v-else id="anfrage">
+      <formular @onSubmit="addInteressent" :alleanm="alleanmeldungen" />
+    </div>
 
     <div id="anmeldungen">
       <Anmeldungen
@@ -93,7 +98,6 @@ export default {
       this.user.id = user.id;
       this.user.name = user.name;
       this.user.admin = user.admin;
-      console.log(this.user);
     }
   },
   methods: {
@@ -120,7 +124,6 @@ export default {
       this.anzahl = data.anzahl.toString();
     },
     async addInteressent(firma, vorname, nachname, tel, mail) {
-      console.log(new Date());
 
       await axios({
         url: '/interessenten',

@@ -1,14 +1,19 @@
 <template>
   <div class="container-fluid px-3 px-md-5 px-lg-3 px-xl-5 py-5 mx-auto">
-    <navbar />
-    <div
-      class="col-md-12 "
-      style="text-align: center"
-      v-if="user.name.length != 0"
-    >
-      <h1 class="mt-5">You are already logged in</h1>
+    <div v-if="user.name.length != 0">
+      <div class="d-flex flex-column justify-content-center">
+        <div class="text-center mt-5">
+          <router-link to="/">Home</router-link> |
+          <router-link to="/login">Login</router-link>
+        </div>
+        <div class="mb-5" style="text-align: center">
+          <h1 class="mt-5">You are already logged in</h1>
+        </div>
+      </div>
     </div>
     <div v-else>
+      <navbar />
+
       <form @submit.prevent="login">
         <div class="card card0 mt-5 border-0">
           <div class="row d-flex">
@@ -23,22 +28,26 @@
             </div>
             <div class="col-lg-6">
               <div class="card2 border-0 px-4 py-5">
-                <div class="row px-3">
-                  {{ message }}
-                </div>
+                <div class="row px-3"></div>
                 <div class="row px-3">
                   <label class="mb-1">
                     <h6 class="mb-0 spacing text-sm">User-ID</h6>
                   </label>
                   <input
-                    class="mb-4 logininput"
+                    class="logininput"
+                    style="margin-left: 0"
                     type="text"
                     name="email"
                     v-model="userId"
                     placeholder="Enter a valid email address"
                   />
+                  <label class="mb-1">
+                    <h6 class="spacing mb-0 text-sm" style="color:red">
+                      {{ message }}
+                    </h6>
+                  </label>
                 </div>
-                <div class="row px-3 mb-4">
+                <div class="row px-3 mb-4 mt-4">
                   <label class="mb-1">
                     <h6 class="spacing mb-0 text-sm">Password</h6>
                   </label>
@@ -49,6 +58,11 @@
                     v-model="password"
                     placeholder="Enter password"
                   />
+                  <label class="mb-1">
+                    <h6 class="spacing mb-0 text-sm" style="color:red">
+                      {{ message }}
+                    </h6>
+                  </label>
                 </div>
                 <!-- <div class="row px-3 mb-4">
               <a href="#" class="ml-auto mb-0 text-sm">Forgot Password?</a>
@@ -88,8 +102,8 @@ export default {
   name: 'app',
   data() {
     return {
-      userId: '3a9997ccb8',
-      password: 'a04b14a17e',
+      userId: '',
+      password: '',
       user: {
         id: '',
         name: '',

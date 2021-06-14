@@ -48,14 +48,14 @@ async function addInteressent(a) {
 
     let interessenten_id = rows[0].max + 1;
     await db.query(
-      'INSERT INTO firma (status, firmen_name, firmen_mail, firmen_id, uhrzeit, fachrichtung, platz, aufbauhilfe, rechnungsadresse,anfrage_zeitpunkt,url, ansprechpartner_ausstellung_name, ansprechpartner_ausstellung_mail, vortrag_auswahl, ferialpraktikum_auswahl, sponsoring_interessiert, firmen_kommentar) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)',
+      'INSERT INTO firma (status, firmen_name, firmen_mail, firmen_id, fachrichtung, platz, aufbauhilfe, rechnungsadresse,anfrage_zeitpunkt,url, ansprechpartner_ausstellung_name, ansprechpartner_ausstellung_mail, vortrag_auswahl, ferialpraktikum_auswahl, sponsoring_interessiert, firmen_kommentar) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)',
       [
         'Interessent',
         a.firmen_name,
         a.mail,
         interessenten_id,
         null,
-        null,
+        
         null,
         null,
         null,

@@ -1,167 +1,193 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 card-margin">
-        <div class="card search-form">
-          <div class="card-body p-0">
-            <form id="search-form">
-              <div class="row">
-                <div class="col-12">
-                  <div class="d-flex ">
-                    <div class="input-group w-100 h-50">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Wen oder Was suchen Sie?"
-                        v-model="search"
-                      />
-                    </div>
+  <div>
+    <navbarAdmin />
+    <div class="container mt-5">
+      <div class="pt-5">
+        <div class="row ">
+          <div class="col-lg-12 card-margin">
+            <div class="card search-form">
+              <div class="card-body p-0">
+                <form id="search-form">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="d-flex ">
+                        <div class="input-group w-100 h-50">
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Wen oder Was suchen Sie?"
+                            v-model="search"
+                          />
+                        </div>
 
-                    <div class="input-group w-50 mb-0 h-50">
-                      <select class="form-select" v-model="select">
-                        <option value="Teilnehmer">Teilnehmer</option>
-                        <option value="Interessent">Interessenten</option>
-                        <option value="Daten erhalten">Daten erhalten</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="card card-margin">
-          <div class="card-body">
-            <div class="row search-body">
-              <div class="col-lg-12">
-                <div class="search-result">
-                  <div class="result-header">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="records">
-                          Showing:
-                          <b>{{ searchAnmeldungen.length }}</b> results
+                        <div class="input-group w-50 mb-0 h-50">
+                          <select class="form-select" v-model="select">
+                            <option value="Teilnehmer">Teilnehmer</option>
+                            <option value="Interessent">Interessenten</option>
+                            <option value="Daten erhalten"
+                              >Daten erhalten</option
+                            >
+                          </select>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="result-body fixheight">
-                    <div class="table-responsive ">
-                      <table
-                        class="table widget-26 "
-                        v-if="searchAnmeldungen.length > 0"
-                      >
-                        <tbody>
-                          <tr
-                            v-for="(i, index) of searchAnmeldungen"
-                            :key="i.firmen_id"
-                          >
-                            <td>
-                              <div class="widget-26-job mt-1">
-                                {{ index + 1 }}
-                              </div>
-                            </td>
-                            <td>
-                              <div class="widget-26-job-title">
-                                <a>{{ i.firmen_name }}</a>
-                                <br />
-                                <span class="text-muted time"
-                                  >{{
-                                    i.anfrage_zeitpunkt.toString().substr(0, 10)
-                                  }}
-                                  gesendet</span
-                                >
-                              </div>
-                            </td>
-                            <td>
-                              <div class="widget-26-job-info mt-3">
-                                <p @click="copyMail(i.firmen_mail)" class="type m-0">{{ i.firmen_mail }}</p>
-                              </div>
-                            </td>
-                            <td v-if="i.status == 'Interessent'">
-                              <div class="widget-26-job-category ">
-                                <i
-                                  class="indicator bg-danger "
-                                  style="margin-top: 12px"
-                                ></i>
-                                <span class="mt-2">Interessent</span>
-                              </div>
-                            </td>
-                            <td v-if="i.status == 'Daten erhalten'">
-                              <div class="widget-26-job-category ">
-                                <i
-                                  class="indicator bg-primary "
-                                  style="margin-top: 12px"
-                                ></i>
-                                <span class="mt-2">Daten erhalten</span>
-                              </div>
-                            </td>
-                            <td v-if="i.status == 'Teilnehmer'">
-                              <div class="widget-26-job-category ">
-                                <i
-                                  class="indicator bg-success "
-                                  style="margin-top: 12px"
-                                ></i>
-                                <span class="mt-2">Teilnehmer</span>
-                              </div>
-                            </td>
-                            <td v-if="i.status == 'Interessent'">
-                              <div class="widget-26-job-category mt-1">
-                                <a
-                                  @click="setDatenerhaltenTrue(i), setDaten(i)"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    fill="currentColor"
-                                    class="bi bi-envelope"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path
-                                      d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"
-                                    />
-                                  </svg>
-                                </a>
-                              </div>
-                            </td>
-                            <td>
-                              <div
-                                class="widget-26-job-category mt-1 "
-                                v-if="i.status == 'Interessent'"
-                              >
-                                <a @click="deleteFirma(i)">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    style="color:red"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="feather feather-x"
-                                  >
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                  </svg>
-                                </a>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <table v-else class="malala">
-                        <div class="center">
-                          <p>Keine Suchergebnisse gefunden</p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-margin">
+              <div class="card-body">
+                <div class="row search-body">
+                  <div class="col-lg-12">
+                    <div class="search-result">
+                      <div class="result-header">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="records">
+                              Showing:
+                              <b>{{ searchAnmeldungen.length }}</b> results
+                            </div>
+                          </div>
                         </div>
-                      </table>
+                      </div>
+                      <div class="result-body fixheight">
+                        <div class="table-responsive ">
+                          <table
+                            class="table widget-26 "
+                            v-if="searchAnmeldungen.length > 0"
+                          >
+                            <tbody>
+                              <tr
+                                v-for="(i, index) of searchAnmeldungen"
+                                :key="i.firmen_id"
+                              >
+                                <td>
+                                  <div class="widget-26-job mt-1">
+                                    {{ index + 1 }}
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="widget-26-job-title">
+                                    <a>{{ i.firmen_name }}</a>
+                                    <br />
+                                    <span class="text-muted time"
+                                      >{{
+                                        i.anfrage_zeitpunkt
+                                          .toString()
+                                          .substr(0, 10)
+                                      }}
+                                      gesendet</span
+                                    >
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="widget-26-job-info mt-3">
+                                    <p
+                                      @click="copyMail(i.firmen_mail)"
+                                      class="type m-0"
+                                    >
+                                      {{ i.firmen_mail }}
+                                    </p>
+                                  </div>
+                                </td>
+                                <td v-if="i.status == 'Interessent'">
+                                  <div class="widget-26-job-category ">
+                                    <i
+                                      class="indicator bg-danger "
+                                      style="margin-top: 12px"
+                                    ></i>
+                                    <span class="mt-2">Interessent</span>
+                                  </div>
+                                </td>
+                                <td v-if="i.status == 'Daten erhalten'">
+                                  <div class="widget-26-job-category ">
+                                    <i
+                                      class="indicator bg-primary "
+                                      style="margin-top: 12px"
+                                    ></i>
+                                    <span class="mt-2">Daten erhalten</span>
+                                  </div>
+                                </td>
+                                <td v-if="i.status == 'Teilnehmer'">
+                                  <div class="widget-26-job-category ">
+                                    <i
+                                      class="indicator bg-success "
+                                      style="margin-top: 12px"
+                                    ></i>
+                                    <span class="mt-2">Teilnehmer</span>
+                                  </div>
+                                </td>
+                                <td v-if="i.status == 'Interessent'">
+                                  <div class="widget-26-job-category mt-1">
+                                    <a
+                                      @click="
+                                        setDatenerhaltenTrue(i), setDaten(i)
+                                      "
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        class="bi bi-envelope"
+                                        viewBox="0 0 16 16"
+                                      >
+                                        <path
+                                          d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"
+                                        />
+                                      </svg>
+                                    </a>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div
+                                    class="widget-26-job-category mt-1 "
+                                    v-if="i.status == 'Interessent'"
+                                  >
+                                    <a @click="deleteFirma(i)">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        style="color:red"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-x"
+                                      >
+                                        <line
+                                          x1="18"
+                                          y1="6"
+                                          x2="6"
+                                          y2="18"
+                                        ></line>
+                                        <line
+                                          x1="6"
+                                          y1="6"
+                                          x2="18"
+                                          y2="18"
+                                        ></line>
+                                      </svg>
+                                    </a>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table v-else class="malala">
+                            <div class="center">
+                              <p>Keine Suchergebnisse gefunden</p>
+                            </div>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -175,17 +201,25 @@
 </template>
 
 <script>
+import emailjs from 'emailjs-com';
 import axios from 'axios';
+import navbarAdmin from '@/componentsLogin/NavbarAdmin.vue';
+
 export default {
   data() {
     return {
       anmeldungen: [],
       search: '',
       select: 'Interessent',
+      user_id: '',
+      passwort: '',
     };
   },
   created() {
     this.getAnmeldungen();
+  },
+  components: {
+    navbarAdmin,
   },
   computed: {
     searchAnmeldungen() {
@@ -211,6 +245,10 @@ export default {
         return v.toString(16);
       });
     },
+    generateDidgetsAndLettersAndLockThem() {
+      this.user_id = this.generateDidgetsAndLetters();
+      this.passwort = this.generateDidgetsAndLetters();
+    },
     async setDatenerhaltenTrue(i) {
       await axios({
         url: `http://127.0.0.1:3000/interessenten/${i.firmen_id}`,
@@ -223,6 +261,7 @@ export default {
       this.getAnmeldungen();
     },
     async setDaten(i) {
+      this.generateDidgetsAndLettersAndLockThem();
       await axios({
         url: `http://127.0.0.1:3000/anmeldedaten`,
         method: 'POST',
@@ -230,11 +269,33 @@ export default {
         data: {
           firmen_name: i.firmen_name,
           firmen_id: i.firmen_id,
-          passwort: this.generateDidgetsAndLetters(),
-          user_id: this.generateDidgetsAndLetters(),
+          passwort: this.passwort,
+          user_id: this.user_id,
         },
       });
       this.getAnmeldungen();
+      const templateParams = {
+        to_name: i.firmen_name,
+        to_mail: i.firmen_mail,
+        user_id: this.user_id,
+        passwort: this.passwort,
+      };
+
+      emailjs
+        .send(
+          'service_6zmw3po',
+          'template_upex8pe',
+          templateParams,
+          'user_gAbx3AR9ArUExRlnHVA3H',
+        )
+        .then(
+          (response) => {
+            console.log('SUCCESS!', response.status, response.text);
+          },
+          (err) => {
+            console.log('FAILED...', err);
+          },
+        );
     },
     async deleteFirma(i) {
       await axios({
