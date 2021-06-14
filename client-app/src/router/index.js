@@ -5,6 +5,7 @@ import Anmeldeformular from '../views/Anmeldeformular.vue';
 import Login from '../views/Login.vue';
 import Logout from '../views/Logout.vue';
 import Admin from '../views/Admin.vue';
+import PageNotFound from '../views/PageNotFound.vue';
 import axios from 'axios';
 
 Vue.use(VueRouter);
@@ -16,12 +17,19 @@ const routes = [
     component: Home,
   },
   {
+    path: '*',
+    component: PageNotFound,
+    beforeEnter() {
+      console.log('Ok');
+    },
+  },
+  {
     path: '/formular',
     name: 'Anmeldung',
     component: Anmeldeformular,
     beforeEnter: async (to, from, next) => {
       if (!isAuthenticated() || (await isAdminAuthenticated()))
-        next({ name: 'Login' });
+        next({ path: this.name});
       next();
     },
   },
@@ -35,7 +43,7 @@ const routes = [
     name: 'Admin',
     component: Admin,
     beforeEnter: async (to, from, next) => {
-      if ((await isAdminAuthenticated()) == false) next({ name: 'Login' });
+      if ((await isAdminAuthenticated()) == false) next({ path: this.path });
       next();
     },
   },

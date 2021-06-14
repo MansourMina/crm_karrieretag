@@ -3,8 +3,7 @@
     <div v-if="user.name.length != 0">
       <div class="d-flex flex-column justify-content-center">
         <div class="text-center mt-5">
-          <router-link to="/">Home</router-link> |
-          <router-link to="/login">Login</router-link>
+          <router-link to="/">Home</router-link>
         </div>
         <div class="mb-5" style="text-align: center">
           <h1 class="mt-5">You are already logged in</h1>

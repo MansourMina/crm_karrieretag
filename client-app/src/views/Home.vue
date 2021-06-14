@@ -103,14 +103,14 @@ export default {
   methods: {
     async getAllAnmeldungen() {
       const { data } = await axios({
-        url: 'http://127.0.0.1:3000/anmeldungen/all',
+        url: '/anmeldungen/all',
         method: 'GET',
       });
       this.alleanmeldungen = data;
     },
     async getAnmeldungen() {
       const { data } = await axios({
-        url: 'http://127.0.0.1:3000/anmeldungen',
+        url: '/anmeldungen',
         method: 'GET',
       });
       this.anmeldungen = data;

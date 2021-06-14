@@ -1,18 +1,35 @@
 <template>
   <div class="container py-5">
     <!-- For Demo Purpose -->
-    <header class="text-center">
+    <header class=" text-center">
       <h1 class="display-4 py-4 font-weight-bold">INFORMATIONEN</h1>
       <p class="font-italic text-muted mb-0">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-        eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-        voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-        clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
-        amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-        nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-        sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-        rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-        ipsum dolor sit amet.
+        Die <b>HTL Wien West</b> veranstaltet einmal im Jahr einen Karrieretag
+        für die Schülerinnen und Schüler der Ausbildungsrichtungen <br /><b
+          >Elektrotechnik, Elektronik, Informationstechnologie, Maschinenbau und
+          Mechatronik.</b
+        >
+        <br /><br />
+        Zentrales Element ist eine Ausstellung von Unternehmen und
+        Ausbildungsinstituten, die sich für unsere <b>Absolventinnen</b> und
+        <b>Absolventen</b> interessieren.
+        <br />
+
+        Unser nächster Karrieretag findet am
+        <b>Mittwoch, dem 9. März 2022</b> statt. Wir laden Sie als herzlich ein,
+        aktiv mit einem Stand an unserem Karrieretag teilzunehmen.
+        <br />
+
+        Bitte beachten Sie, dass unser Platz aufgrund der räumlichen
+        Gegebenheiten beschränkt ist und wir daher letztes Mal mit
+        <b>52 Teilnehmern</b> das Maximum erreicht haben. <br />Wir gehen nach
+        der Reihenfolge der Anmeldungen vor.
+        <br />
+        <br />
+
+        Sollten Sie Fragen zur Teilnahme haben, kontaktieren Sie bitte
+        <b><span style="color:blue">karrieretag@htlwienwest.at</span></b
+        >.
       </p>
     </header>
 
@@ -20,9 +37,9 @@
 
     <div class="py-3 ">
       <div class="row justify-content-center">
-        <div class="col-md-4 py-3" v-for="i of images" :key="i.id">
+        <div class="col-md-4 py-3 " v-for="i of images" :key="i.id">
           <div
-            class="content"
+            class="content mt-0 pt-0"
             @click="popUpImage(i)"
             data-bs-toggle="modal"
             data-bs-target="#imageModal"
@@ -69,7 +86,7 @@ export default {
   methods: {
     popUpImage(obj) {
       this.objectOfImage = obj;
-      this.isImageVisible = !this.isImageVisible;
+      this.isImageVisible = true;
     },
   },
 };

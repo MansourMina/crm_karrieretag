@@ -94,6 +94,24 @@
                                     </p>
                                   </div>
                                 </td>
+                                <td v-if="i.status == 'Teilnehmer'">
+                                  <div class="widget-26-job-category ">
+                                    <span class="mt-2">{{
+                                      i.fachrichtung.toString()
+                                    }}</span>
+                                  </div>
+                                </td>
+                                <td v-if="i.status == 'Teilnehmer'">
+                                  <div class="widget-26-job-category ">
+                                    <span class="mt-2">{{i.platz}}</span>
+                                  </div>
+                                </td>
+                                <td v-if="i.status == 'Teilnehmer'">
+                                  <div class="widget-26-job-category ">
+                                    <span class="mt-2" v-if="i.aufbauhilfe">AH: Ja</span>
+                                    <span class="mt-2" v-if="!i.aufbauhilfe">AH: Nein</span>
+                                  </div>
+                                </td>
                                 <td v-if="i.status == 'Interessent'">
                                   <div class="widget-26-job-category ">
                                     <i
@@ -183,7 +201,7 @@
                           </table>
                           <table v-else class="malala">
                             <div class="center">
-                              <p>Keine Suchergebnisse gefunden</p>
+                              <p>Keine Daten vorhanden</p>
                             </div>
                           </table>
                         </div>

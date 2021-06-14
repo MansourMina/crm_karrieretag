@@ -10,32 +10,11 @@
 </template>
 
 <script>
-import axios from 'axios';
 import formular from '@/componentsFormular/formular.vue';
 import Navbar from '@/componentsFormular/NavbarFormular.vue';
 
 export default {
   name: 'app',
-  data() {
-    return {
-      user: {
-        id: '',
-        name: '',
-      },
-    };
-  },
-
-  async created() {
-    const { data } = await axios({
-      url: '/secretdata',
-      method: 'GET',
-    });
-    this.prime = data;
-    let user = JSON.parse(localStorage.getItem('user'));
-    this.user.id = user.id;
-    this.user.name = user.name;
-  },
-
   components: {
     formular,
     Navbar,

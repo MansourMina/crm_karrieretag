@@ -16,7 +16,7 @@
           ></button>
         </div>
         <div class="modal-body p-0" >
-          <img :src="i.url" class="img-fluid" />
+          <img :src="i.url" class="img-fluid " />
         </div>
       </div>
     </div>
